@@ -53,6 +53,18 @@ describe('datetime dates and times (local)', () => {
         }).catch(done)
     })
 
+    it('2019-12-19 23:59:59:999 DB', done => {
+        const date = new Date(2019, 11, 19, 23, 59, 59, 999)
+
+        const req = new sql.Request()
+        req.input('dt1', sql.DateTime, date)
+        req.query('insert into [TestCreateTime] values(@dt1);select CreateTime dt1 from TestCreateTime').then(result => {
+            assert.strictEqual(+result.recordset[0].dt1, date.getTime())
+
+            done()
+        }).catch(done)
+    })
+
     it('2019-12-19 23:59:59:997', done => {
         const date = new Date(2019, 11, 19, 23, 59, 59, 997)
 
