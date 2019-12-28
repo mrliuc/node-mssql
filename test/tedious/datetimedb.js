@@ -22,6 +22,7 @@ describe('datetime dates and times (local)', () => {
             drop table TestCreateTime
             
             CREATE TABLE [dbo].[TestCreateTime](
+                Id bigint,
                 [CreateTime] [datetime] NULL
             )`, done)
 
@@ -33,8 +34,9 @@ describe('datetime dates and times (local)', () => {
         const date = new Date(2019, 11, 19, 23, 59, 59, 997)
 
         const req = new sql.Request()
+        req.input('Id', sql.BigInt, date.getTime())
         req.input('dt1', sql.DateTime, date)
-        req.query('insert into [TestCreateTime] values(@dt1);select CreateTime dt1 from TestCreateTime').then(result => {
+        req.query('insert into [TestCreateTime] values(@Id,@dt1);select CreateTime dt1 from TestCreateTime where Id=@Id').then(result => {
             assert.strictEqual(+result.recordset[0].dt1, date.getTime())
 
             done()
@@ -45,8 +47,10 @@ describe('datetime dates and times (local)', () => {
         const date = new Date(2019, 11, 19, 23, 59, 59, 998)
 
         const req = new sql.Request()
+        req.input('Id', sql.BigInt, date.getTime())
         req.input('dt1', sql.DateTime, date)
-        req.query('insert into [TestCreateTime] values(@dt1);select CreateTime dt1 from TestCreateTime').then(result => {
+        req.query('insert into [TestCreateTime] values(@Id,@dt1);select CreateTime dt1 from TestCreateTime where Id=@Id').then(result => {
+            console.log(result.recordset[0].dt1)
             assert.strictEqual(+result.recordset[0].dt1, date.getTime())
 
             done()
@@ -57,8 +61,11 @@ describe('datetime dates and times (local)', () => {
         const date = new Date(2019, 11, 19, 23, 59, 59, 999)
 
         const req = new sql.Request()
+        req.input('Id', sql.BigInt, date.getTime())
         req.input('dt1', sql.DateTime, date)
-        req.query('insert into [TestCreateTime] values(@dt1);select CreateTime dt1 from TestCreateTime').then(result => {
+        req.query('insert into [TestCreateTime] values(@Id,@dt1);select CreateTime dt1 from TestCreateTime where Id=@Id').then(result => {
+            console.log(result.recordset[0].dt1)
+
             assert.strictEqual(+result.recordset[0].dt1, date.getTime())
 
             done()
